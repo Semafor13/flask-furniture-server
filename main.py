@@ -45,8 +45,9 @@ class Purchase(db.Model):
 @app.route('/api/authorize', methods=['POST'])
 def authorize():
     data = request.get_json()
-    username = data.get('login'.lower())
-    password = data.get('password'.lower())
+    username = data.get('login').lower()
+    print(username)
+    password = data.get('password')
 
     user = User.query.filter_by(username=username).first()
     if user and check_password_hash(user.password_hash, password):
@@ -59,7 +60,7 @@ def authorize():
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
-    username = data.get('username')
+    username = data.get('username').lower()
     password = data.get('password')
     role = data.get('role')
 
