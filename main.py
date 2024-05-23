@@ -114,6 +114,14 @@ def get_products():
     return jsonify(result), 200
 
 
+@app.route('/api/products/<int:product_id>', methods=['DELETE'])
+def delete_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    db.session.delete(product)
+    db.session.commit()
+    return jsonify({'status': 'ok'}), 200
+
+
 @app.route('/api/products', methods=['POST'])
 def create_product():
     data = request.get_json()
@@ -135,9 +143,9 @@ def create_product():
 
 
 def create_initial_user():
-    User_user = User.query.filter_by(username='Admin').first()
+    User_user = User.query.filter_by(username='admin').first()
     if not User_user:
-        hashed_password = generate_password_hash('Admin')
+        hashed_password = generate_password_hash('admin')
         new_user = User(username='admin', password_hash=hashed_password, role='Admin')
         db.session.add(new_user)
         db.session.commit()
