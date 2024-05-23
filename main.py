@@ -1,5 +1,3 @@
-import datetime
-
 from flask import Flask
 from flask import request, jsonify
 from flask_login import login_user, UserMixin, LoginManager
@@ -76,6 +74,11 @@ def register():
     return jsonify({'status': 'ok', 'message': 'Пользователь успешно зарегистрирован'}), 201
 
 
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    return jsonify({'status': 'ok'}), 200
+
+
 @app.route('/api/user', methods=['GET'])
 def get_user():
     data = request.get_json()
@@ -135,7 +138,7 @@ def create_initial_user():
     User_user = User.query.filter_by(username='Admin').first()
     if not User_user:
         hashed_password = generate_password_hash('Admin')
-        new_user = User(username='Admin', password_hash=hashed_password, role='Admin')
+        new_user = User(username='admin', password_hash=hashed_password, role='Admin')
         db.session.add(new_user)
         db.session.commit()
 
